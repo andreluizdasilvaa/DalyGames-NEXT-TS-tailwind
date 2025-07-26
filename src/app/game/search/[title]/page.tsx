@@ -14,10 +14,11 @@ async function getData(title: string) {
 }
 
 type ParamProp = {
-    params: { title: string }
+    params: Promise<{ title: string }>
 }
 export default async function Search({ params }: ParamProp) {
-    const games: GameProps[] = await getData(params.title)
+    const { title } = await params
+    const games: GameProps[] = await getData(title)
 
     return (
         <Container>

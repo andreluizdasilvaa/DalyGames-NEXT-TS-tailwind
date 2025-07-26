@@ -7,12 +7,13 @@ import { GameCard } from "@/components/gameCard"
 import { Metadata } from "next"
 
 type ParamProps = {
-    params: { id: string }
+    params: Promise<{ id: string }>
 }
 
 export async function generateMetadata({ params }: ParamProps):Promise<Metadata> {
     try {
-        const response:GameProps = await fetch(`${process.env.NEXT_API_URL}/next-api/?api=game&id=${params.id}`, { cache: 'no-store' })
+        const { id } = await params
+        const response:GameProps = await fetch(`${process.env.NEXT_API_URL}/next-api/?api=game&id=${id}`, { cache: 'no-store' })
         .then((res) => res.json())
         .catch(() => {
             return {
@@ -64,7 +65,8 @@ async function getGameSorted() {
 }
 
 export default async function Game({ params }:ParamProps) {
-    const game: GameProps = await getData(params.id)
+    const { id } = await params
+    const game: GameProps = await getData(id)
     const sortedGame: GameProps = await getGameSorted()
     
     if(!game) {
@@ -85,7 +87,7 @@ export default async function Game({ params }:ParamProps) {
             </div>
 
             <Container>
-                <h1>{game.title}</h1>
+                <h1 className="font-bold text-3xl my-3">{game.title}</h1>
                 <p>{game.description}</p>
 
                 <h2 className="font-bold text-lg mt-7 mb-2">Categorias:</h2>
