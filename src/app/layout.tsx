@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Header } from "@/components/header";
+import { ToasterClient } from "@/components/ToaterClient";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${geistSans.variable} antialiased`}
       >
         <Header />
+        <ToasterClient />
         {children}
       </body>
     </html>
